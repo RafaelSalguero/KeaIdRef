@@ -7,6 +7,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeaIdRef", "KeaIdRef\KeaIdR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KeaIdRef.Test", "KeaIdRef.Test\KeaIdRef.Test.csproj", "{D6C00C5F-EE34-4A33-9D4A-C66B432CC0DC}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces", "Interfaces", "{215744DC-007B-487D-89BB-D31298F35CEB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kea.Config", "Kea.Config\Kea.Config.csproj", "{2509E0B9-827B-4308-83E2-688CD53A2766}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,8 +25,15 @@ Global
 		{D6C00C5F-EE34-4A33-9D4A-C66B432CC0DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D6C00C5F-EE34-4A33-9D4A-C66B432CC0DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D6C00C5F-EE34-4A33-9D4A-C66B432CC0DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2509E0B9-827B-4308-83E2-688CD53A2766}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2509E0B9-827B-4308-83E2-688CD53A2766}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2509E0B9-827B-4308-83E2-688CD53A2766}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2509E0B9-827B-4308-83E2-688CD53A2766}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{2509E0B9-827B-4308-83E2-688CD53A2766} = {215744DC-007B-487D-89BB-D31298F35CEB}
 	EndGlobalSection
 EndGlobal
