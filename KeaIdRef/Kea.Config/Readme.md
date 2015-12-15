@@ -34,4 +34,4 @@ public class Controller
 ````
 
 **Included implementations:**
-`InMemoryConfig` The IConfig service implemented as a `Dictionary<string,string>`
+ - `InMemoryConfig` The IConfig service implemented as a `Dictionary<string,string>`
