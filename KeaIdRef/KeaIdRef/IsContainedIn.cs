@@ -91,8 +91,13 @@ namespace Kea.Serialization
                     if (Collection == null)
                         throw new ArgumentException($"The property {P.Name} have the collection property {Att.CollectionProperty} which was not found on class {Type.FullName}");
 
+                    var CollectionValue = Collection.GetValue(Instance);
+                    if (CollectionValue == null )
+                        throw new ArgumentException($"The property {P.Name} have the collection property {Att.CollectionProperty} which is null");
+
+
                     //Check if collections is IEnumerable:
-                    var AsEnumerable = Collection as IEnumerable;
+                    var AsEnumerable = CollectionValue as IEnumerable;
                     if (AsEnumerable == null)
                         throw new ArgumentException($"The property {P.Name} have the collection property {Att.CollectionProperty} which is not an IEnumerable");
 
