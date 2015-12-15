@@ -8,13 +8,15 @@ Classes can depend on the `IConfig` interface, that provides the `string Get()` 
 
 Extension methods for this interface provide an easy way to save serialized objects onto any IConfig service
 
+Because of the small size of the interface, the IConfig service is easily implemented 
+
 **Example:**
 ````C#
 public class Controller
 {
 	public Controller (IConfig Config)
 	{
-		this.cofig = Config;
+		this.config = Config;
 
 		//The class can load configurations here:
 		this.Title = Config.Get(nameof(Title));
@@ -30,3 +32,6 @@ public class Controller
 	public ConfigObject Config { get; set;}
 }
 ````
+
+**Included implementations:**
+`InMemoryConfig` The IConfig service implemented as a `Dictionary<string,string>`
