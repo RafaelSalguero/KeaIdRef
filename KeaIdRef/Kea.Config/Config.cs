@@ -38,6 +38,7 @@ namespace Kea.Interfaces
         /// <summary>
         /// Sets a singleton value using its type as a key
         /// </summary>
+        /// <param name="Config">The configuration store</param>
         /// <param name="Singleton">The value to save</param>
         public static void Set(this IConfig Config, object Singleton)
         {
