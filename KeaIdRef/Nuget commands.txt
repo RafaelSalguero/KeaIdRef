@@ -1,0 +1,2 @@
+//Command used for creating the nuget package on every release build without uploading it:
+if Release==$(ConfigurationName) cd $(ProjectDir) && mkdir Nuget ||  del Nuget\* /Q && nuget pack $(ProjectName).csproj -OutputDirectory Nuget -Prop Configuration=Release -IncludeReferencedProjects

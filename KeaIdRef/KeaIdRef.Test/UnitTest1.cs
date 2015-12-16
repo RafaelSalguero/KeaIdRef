@@ -15,7 +15,7 @@ namespace KeaIdRef.Test
             Func<Db> Db = () => new Test.Db();
 
             //Create a new view model:
-            var VM = new CitiesViewModel(Db, Config, false);
+            var VM = new SingleCityViewModel(Db, Config, false);
 
             //Supose that the user choose the first city:
             VM.City = VM.Cities.First();
@@ -28,7 +28,7 @@ namespace KeaIdRef.Test
 
             //The user opens the window again, expecting viewing the first city as the selected one,
             //here we skip substitution so the view model will be on an incorrect state
-            VM = new CitiesViewModel(Db, Config, true);
+            VM = new SingleCityViewModel(Db, Config, true);
 
             //The City.Id is correct but the instance is not the first element of the list
             //This view model would not be displayed correctly by a view because the selected item instance is not contained on the items source collection
@@ -36,7 +36,7 @@ namespace KeaIdRef.Test
             Assert.AreNotEqual(VM.Cities.First(), VM.City);
 
             //The user opens the window again, this time without skipping the substitution
-            VM = new CitiesViewModel(Db, Config, false);
+            VM = new SingleCityViewModel(Db, Config, false);
             Assert.AreEqual(0, VM.City.Id);
             Assert.AreEqual(VM.Cities.First (), VM.City);
 

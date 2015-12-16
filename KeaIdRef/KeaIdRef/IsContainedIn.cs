@@ -82,7 +82,6 @@ namespace Kea.Serialization
             var Props = Type.GetProperties();
             foreach (var P in Props)
             {
-
                 var Att = P.GetCustomAttribute<IsContainedInAttribute>();
                 if (Att != null)
                 {

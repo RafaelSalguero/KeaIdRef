@@ -3,11 +3,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D6C00C5F-EE34-4A33-9D4A-C66B432CC0DC}</ProjectGuid>
+    <ProjectGuid>{A642BFE3-A601-4FE1-AAAB-62F0F35FE4B0}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>KeaIdRef.Test</RootNamespace>
-    <AssemblyName>KeaIdRef.Test</AssemblyName>
+    <RootNamespace>Kea.Extensions.Test</RootNamespace>
+    <AssemblyName>Kea.Extensions.Test</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{3AC096D0-A1C2-E12C-1390-A8335801FDAB};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -35,10 +35,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=7.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.7.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
   </ItemGroup>
   <Choose>
@@ -54,23 +50,14 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="CityViewModel.cs" />
-    <Compile Include="SingleCityViewModel.cs" />
-    <Compile Include="City.cs" />
-    <Compile Include="Db.cs" />
-    <Compile Include="IConfig.cs" />
-    <Compile Include="MultiCityViewModel.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\KeaIdRef\KeaIdRef.csproj">
-      <Project>{9092c413-73ed-4d8c-a382-a9b7dfc910cf}</Project>
-      <Name>KeaIdRef</Name>
+    <ProjectReference Include="..\Kea.RLinq\Kea.Extensions.csproj">
+      <Project>{807a7ef8-0c99-4d92-90ff-a7fe37e3799c}</Project>
+      <Name>Kea.Extensions</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

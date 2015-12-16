@@ -11,6 +11,14 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Interfaces", "Interfaces", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kea.Config", "Kea.Config\Kea.Config.csproj", "{2509E0B9-827B-4308-83E2-688CD53A2766}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{440BF8A7-FC1A-4ED1-98C3-125BF904CC53}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kea.Extensions", "Kea.RLinq\Kea.Extensions.csproj", "{807A7EF8-0C99-4D92-90FF-A7FE37E3799C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kea.Extensions.Test", "Kea.Extensions.Test\Kea.Extensions.Test.csproj", "{A642BFE3-A601-4FE1-AAAB-62F0F35FE4B0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kea.RLinq", "Kea.ReflectionLinq\Kea.RLinq.csproj", "{961A648E-570D-4AF3-AF6C-12684839EFD5}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -29,11 +37,26 @@ Global
 		{2509E0B9-827B-4308-83E2-688CD53A2766}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2509E0B9-827B-4308-83E2-688CD53A2766}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{2509E0B9-827B-4308-83E2-688CD53A2766}.Release|Any CPU.Build.0 = Release|Any CPU
+		{807A7EF8-0C99-4D92-90FF-A7FE37E3799C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{807A7EF8-0C99-4D92-90FF-A7FE37E3799C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{807A7EF8-0C99-4D92-90FF-A7FE37E3799C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{807A7EF8-0C99-4D92-90FF-A7FE37E3799C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A642BFE3-A601-4FE1-AAAB-62F0F35FE4B0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A642BFE3-A601-4FE1-AAAB-62F0F35FE4B0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A642BFE3-A601-4FE1-AAAB-62F0F35FE4B0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A642BFE3-A601-4FE1-AAAB-62F0F35FE4B0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{961A648E-570D-4AF3-AF6C-12684839EFD5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{961A648E-570D-4AF3-AF6C-12684839EFD5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{961A648E-570D-4AF3-AF6C-12684839EFD5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{961A648E-570D-4AF3-AF6C-12684839EFD5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{2509E0B9-827B-4308-83E2-688CD53A2766} = {215744DC-007B-487D-89BB-D31298F35CEB}
+		{807A7EF8-0C99-4D92-90FF-A7FE37E3799C} = {440BF8A7-FC1A-4ED1-98C3-125BF904CC53}
+		{A642BFE3-A601-4FE1-AAAB-62F0F35FE4B0} = {440BF8A7-FC1A-4ED1-98C3-125BF904CC53}
+		{961A648E-570D-4AF3-AF6C-12684839EFD5} = {440BF8A7-FC1A-4ED1-98C3-125BF904CC53}
 	EndGlobalSection
 EndGlobal
