@@ -91,7 +91,7 @@ namespace Kea.Serialization
                         throw new ArgumentException($"The property {P.Name} have the collection property {Att.CollectionProperty} which was not found on class {Type.FullName}");
 
                     var CollectionValue = Collection.GetValue(Instance);
-                    if (CollectionValue == null )
+                    if (CollectionValue == null)
                         throw new ArgumentException($"The property {P.Name} have the collection property {Att.CollectionProperty} which is null");
 
 
@@ -100,22 +100,40 @@ namespace Kea.Serialization
                     if (AsEnumerable == null)
                         throw new ArgumentException($"The property {P.Name} have the collection property {Att.CollectionProperty} which is not an IEnumerable");
 
-                    //Search for the item with the same IdProperty on the collection:
+                    //Check if this is a single selector or a multiple selector:
+                    var EnumType = AsEnumerable.GetEnumerableType();
+                    bool IsMultiple =
+                        Kea.RLinq.IsIEnumerableOfT(P.PropertyType) && Kea.RLinq.GetEnumerableType(P.PropertyType).IsSubClassOfGeneric(EnumType);
+
                     var PropGetter = GetIdPropertyFunc(P.PropertyType, Att.IdProperty);
-                    var PropValue = P.GetValue(Instance);
-                    if (PropValue != null)
+                    Func<object, object> GetReference = (Input) =>
+                   {
+                       if (Input == null) return null;
+                       var IdValue = PropGetter(Input);
+                       var Reference = AsEnumerable
+                       .Cast<object>()
+                       .Where(x => x != null)
+                       .Where(x => object.Equals(PropGetter(x), IdValue))
+                       .FirstOrDefault();
+
+                       if (Reference == null)
+                           throw new ArgumentException($"The collection {Att.CollectionProperty} from the class {Type.FullName} does not contain the value for the property {P.Name }");
+                       else
+                           return Reference;
+                   };
+
+                    if (IsMultiple)
                     {
-                        var IdValue = PropGetter(PropValue);
-                        var Reference = AsEnumerable.Cast<object>()
-                            .Where(x => x != null)
-                            .Where(x => object.Equals(PropGetter(x), IdValue))
-                            .FirstOrDefault();
+                        //From prop collection, select the collection object that share the same IdProperty
+                        var Dest = ((IEnumerable)P.GetValue(Instance)).Cast<object>();
 
-                        if (Reference == null)
-                            throw new ArgumentException($"The collection {Att.CollectionProperty} from the class {Type.FullName} does not contain the value for the property {P.Name }");
-
+                    }
+                    else
+                    {
+                        //Search for the item with the same IdProperty on the collection:
+                        var PropValue = P.GetValue(Instance);
                         //Set property equal to the collection instance:
-                        P.SetValue(Instance, Reference);
+                        P.SetValue(Instance,  GetReference (PropValue ));
                     }
                 }
             }

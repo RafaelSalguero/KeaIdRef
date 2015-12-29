@@ -8,7 +8,7 @@ namespace KeaIdRef.Test
     public class UnitTest1
     {
         [TestMethod]
-        public void TestMethod1()
+        public void IsInCollectionSingleSelector()
         {
             //Configuration store, this could be physical files in production
             var Config = new InMemoryConfig();
@@ -38,9 +38,38 @@ namespace KeaIdRef.Test
             //The user opens the window again, this time without skipping the substitution
             VM = new SingleCityViewModel(Db, Config, false);
             Assert.AreEqual(0, VM.City.Id);
-            Assert.AreEqual(VM.Cities.First (), VM.City);
+            Assert.AreEqual(VM.Cities.First(), VM.City);
+        }
 
+        [TestMethod]
+        public void IsInCollectionMultipleSelector()
+        {
+            //Configuration store, this could be physical files in production
+            var Config = new InMemoryConfig();
+            Func<Db> Db = () => new Test.Db();
 
+            //Create a new view model:
+            var VM = new MultiCityViewModel(Db, Config, false);
+
+            //The user select the first two cities
+            VM.SelectedCities.Add(VM.Cities[0]);
+            VM.SelectedCities.Add(VM.Cities[1]);
+
+            //Supose that the close event triggers the save config:
+            VM.SaveConfig();
+            VM = null;
+
+            //The user opens the window (with subistitute disabled)
+            VM = new MultiCityViewModel(Db, Config, true);
+
+            //The object Ids are correct but the object references are incorrect:
+            Assert.IsTrue(VM.Cities.Take(2).Select(x => x.Id).SequenceEqual(VM.SelectedCities.Select(x => x.Id)));
+            Assert.IsFalse(VM.Cities.Take(2).SequenceEqual(VM.SelectedCities));
+
+            //The user opens the window (with substitute enabled)
+            VM = new MultiCityViewModel(Db, Config, false);
+
+            Assert.IsTrue(VM.Cities.Take(2).SequenceEqual(VM.SelectedCities));
         }
     }
 }

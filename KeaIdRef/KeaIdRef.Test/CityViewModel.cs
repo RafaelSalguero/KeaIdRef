@@ -17,7 +17,7 @@ namespace KeaIdRef.Test
             this.Config = Config;
             using (var C = Db())
             {
-                Cities = C.Cities;
+                Cities = C.Cities.ToList();
             }
             LoadConfig(SkipSubstitute);
         }
@@ -26,7 +26,7 @@ namespace KeaIdRef.Test
         /// <summary>
         /// Item source
         /// </summary>
-        public IEnumerable<City> Cities { get; private set; }
+        public IReadOnlyList<City> Cities { get; private set; }
 
         /// <summary>
         /// Save the current view model state onto the configuration store

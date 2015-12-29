@@ -47,6 +47,12 @@
   <ItemGroup>
     <None Include="Readme.md" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Kea.ReflectionLinq\Kea.RLinq.csproj">
+      <Project>{961a648e-570d-4af3-af6c-12684839efd5}</Project>
+      <Name>Kea.RLinq</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>if Release==$(ConfigurationName) cd $(ProjectDir) &amp;&amp; mkdir Nuget ||  del Nuget\* /Q &amp;&amp; nuget pack $(ProjectName).csproj -OutputDirectory Nuget -Prop Configuration=Release -IncludeReferencedProjects</PostBuildEvent>
