@@ -12,6 +12,7 @@ namespace Kea.Extensions.Test
         [TestMethod]
         public void SelectPos()
         {
+
             Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SelectLookahead(Tuple.Create).SequenceEqual(
                new[]
                {
@@ -27,7 +28,7 @@ namespace Kea.Extensions.Test
                {
                     Tuple.Create (0, 1, 2, 0 , SequencePosition.First ),
                     Tuple.Create (1, 2, 3, 1 , SequencePosition.Middle ),
-                    Tuple.Create (2, 3, 4, 2 , SequencePosition.Last ),
+                    Tuple.Create (2, 3, 0, 2 , SequencePosition.Last ),
                }));
 
             Assert.IsTrue(new[] { 1, 2
@@ -35,10 +36,10 @@ namespace Kea.Extensions.Test
                new[]
                {
                     Tuple.Create (0, 1, 2, 0 , SequencePosition.First ),
-                    Tuple.Create (1, 2, 3, 1 , SequencePosition.Last ),
+                    Tuple.Create (1, 2, 0, 1 , SequencePosition.Last ),
                }));
 
-            Assert.IsTrue(new[] { 1 
+            Assert.IsTrue(new[] { 1
             }.SelectLookahead(Tuple.Create).SequenceEqual(
                new[]
                {

@@ -53,13 +53,13 @@ namespace Kea.Extensions
             int index = 0;
             foreach (var Next in Items)
             {
-                if (index >= 1)
-                {
-                    yield return Selector(default(T), Current, Next, index - 1, SequencePosition.First);
-                }
-                else if (index >= 2)
+                if (index >= 2)
                 {
                     yield return Selector(Last, Current, Next, index - 1, SequencePosition.Middle);
+                }
+                else if (index >= 1)
+                {
+                    yield return Selector(default(T), Current, Next, index - 1, SequencePosition.First);
                 }
 
                 index++;
