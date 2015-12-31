@@ -13,18 +13,35 @@ namespace Kea
     /// </summary>
     public static class MementoFactory
     {
+        public class Statistics
+        {
+            public long VirtualPropertyGetterTime;
+            public long NonVirtualPropertyGetterTime;
+        }
+        public static bool EnableStatistics = false;
+        public static Statistics Stats = new Statistics();
+
         [ThreadStatic]
-        private static ProxyGenerator generator = new ProxyGenerator();
+        private static ProxyGenerator _generator;
+        private static ProxyGenerator generator
+        {
+            get
+            {
+                if (_generator == null)
+                    _generator = new ProxyGenerator();
+                return _generator;
+            }
+        }
 
         class ProxyInterceptor : IInterceptor
         {
             /// <summary>
             /// Contains all properties that should be copied back to the original model
             /// </summary>
-            public readonly HashSet<string> copyProperties;
+            readonly HashSet<string> copyProperties;
 
 
-            public readonly object Source;
+            readonly object Source;
             public ProxyInterceptor(object Source, HashSet<string> copyProperties, Func<PropertyInfo, bool> IncludeProperty)
             {
                 this.copyProperties = copyProperties;
@@ -36,7 +53,11 @@ namespace Kea
             }
 
 
-            public Dictionary<string, object> virtualPropertiesValues = new Dictionary<string, object>();
+            Dictionary<string, object> virtualPropertiesValues = new Dictionary<string, object>();
+            public void AddVirtualPropertyValue(string PropertyName, object Value)
+            {
+                virtualPropertiesValues[PropertyName] = Value;
+            }
 
             public void Intercept(IInvocation invocation)
             {
@@ -70,6 +91,8 @@ namespace Kea
                 invocation.ReturnValue = RetValue;
             }
         }
+
+        #region Property predicates
 
         private static Func<PropertyInfo, bool> allNonVirtualReadWrite = x => x.CanRead && x.CanWrite && !x.GetGetMethod().IsVirtual;
 
@@ -119,6 +142,21 @@ namespace Kea
         }
 
 
+        private static Func<PropertyInfo, bool> virtuals = x => x.GetGetMethod().IsVirtual;
+
+        /// <summary>
+        /// Returns a predicate that passes all virtual properties
+        /// </summary>
+        public static Func<PropertyInfo, bool> Virtuals
+        {
+            get
+            {
+                return virtuals;
+            }
+        }
+        #endregion
+
+
 
         /// <summary>
         /// Create an instance of type T that have a copy of all non-virtual properties, and property proxies for virtual ones.
@@ -126,20 +164,30 @@ namespace Kea
         /// </summary>
         /// <param name="Instance">Instance to copy</param>
         /// <param name="IncludeProperty">Predicate for properties that should be copied to the memento</param>
+        /// <param name="ExcludeProperty">Properties that will be explicitly copied to the memento as null or default values at the moment of its creation.
         /// <param name="CopyProperties">Contains all properties that passed the IncludeProperty predicate and that should be copied back to the original view model when the change is commited</param>
         /// <returns></returns>
-        public static object Create(Type Type, object Instance, out HashSet<string> CopyProperties, Func<PropertyInfo, bool> IncludeProperty)
+        public static object Create(Type Type, object Instance, out HashSet<string> CopyProperties, Func<PropertyInfo, bool> IncludeProperty, Func<PropertyInfo, bool> ExcludeProperty)
         {
             var Method = typeof(MementoFactory).GetMethods()
                 .Where(
                 x => x.Name == nameof(Create) &&
                 x.IsGenericMethodDefinition &&
-                x.GetParameters().Length == 2
+                x.GetParameters().Length == 3
                 ).Single().MakeGenericMethod(Type);
 
-            dynamic R = Method.Invoke(null, new object[] { Instance, IncludeProperty });
+            dynamic R = Method.Invoke(null, new object[] { Instance, IncludeProperty, ExcludeProperty });
             CopyProperties = R.ModifiedProperties;
             return R.Instance;
+        }
+
+        static object GetDefault(Type type)
+        {
+            if (type.IsValueType)
+            {
+                return Activator.CreateInstance(type);
+            }
+            return null;
         }
 
         /// <summary>
@@ -149,8 +197,11 @@ namespace Kea
         /// <typeparam name="T">Type to proxy</typeparam>
         /// <param name="Instance">Instance to copy</param>
         /// <param name="CopyProperties">Contains all properties that should be copied back to the original view model when the change is commited</param>
+        /// <param name="IncludeProperty">Properties that will be explicitly copied to the memento at the moment of its creation</param>
+        /// <param name="ExcludeProperty">Properties that will be explicitly copied to the memento as null or default values at the moment of its creation.
+        /// ExcludedProperties takes precedence over IncludeProperty</param>
         /// <returns></returns>
-        public static T Create<T>(T Instance, out HashSet<string> CopyProperties, Func<PropertyInfo, bool> IncludeProperty)
+        public static T Create<T>(T Instance, out HashSet<string> CopyProperties, Func<PropertyInfo, bool> IncludeProperty, Func<PropertyInfo, bool> ExcludeProperty)
             where T : class
         {
             var cP = new HashSet<string>();
@@ -159,11 +210,36 @@ namespace Kea
             var ret = (T)generator.CreateClassProxy(typeof(T), Interceptor);
 
             //Copy all non virtual properties:
-            foreach (var P in typeof(T).GetProperties().Where(IncludeProperty))
+            foreach (var P in typeof(T).GetProperties().Where(x => IncludeProperty(x) || ExcludeProperty(x)))
             {
-                var value = P.GetValue(Instance);
+                object value;
+
+                if (ExcludeProperty(P))
+                {
+                    value = GetDefault(P.PropertyType);
+                }
+                else
+                {
+                    try
+                    {
+                        value = P.GetValue(Instance);
+                    }
+                    catch (TargetInvocationException ex)
+                    {
+                        throw new ArgumentException($"Exception while calling the property getter '{P.Name}'", ex.InnerException);
+                    }
+                }
                 if (P.CanWrite)
-                    P.SetValue(ret, value);
+                {
+                    try
+                    {
+                        P.SetValue(ret, value);
+                    }
+                    catch (TargetInvocationException ex)
+                    {
+                        throw new ArgumentException($"Exception while calling the property setter '{P.Name}'", ex.InnerException);
+                    }
+                }
                 else
                 {
                     if (!P.GetGetMethod().IsVirtual)
@@ -171,7 +247,7 @@ namespace Kea
                         throw new ArgumentException($"Read only property '{P.Name}' can't be used by the memento facatory. Only read only virtual properties are allowed");
                     }
                     else
-                        Interceptor.virtualPropertiesValues.Add(P.Name, value);
+                        Interceptor.AddVirtualPropertyValue(P.Name, value);
                 }
             }
             return ret;
@@ -201,14 +277,32 @@ namespace Kea
         /// This allows to manage a proxy for a memento without compromising lazy-loading of ORMs
         /// </summary>
         /// <typeparam name="T">Type to proxy</typeparam>
+        /// <param name="IncludeProperty">Properties that will be explicitly copied to the memento at the moment of its creation</param>
+        /// <param name="ExcludeProperty">Properties that will be explicitly copied to the memento as null or default values at the moment of its creation.
+        /// ExcludedProperties takes precedence over IncludeProperty</param>
+        /// <param name="Instance">Instance to copy</param>
+        /// <returns></returns>
+        public static Memento<T> Create<T>(T Instance, Func<PropertyInfo, bool> IncludeProperty, Func<PropertyInfo, bool> ExcludeProperty)
+            where T : class
+        {
+            HashSet<string> copy;
+            T result = Create(Instance, out copy, IncludeProperty, ExcludeProperty);
+            return new Memento<T> { Instance = result, ModifiedProperties = copy };
+        }
+
+        /// <summary>
+        /// Create an instance of type T that have a copy of all non-virtual properties, and property proxies for virtual ones.
+        /// This allows to manage a proxy for a memento without compromising lazy-loading of ORMs
+        /// </summary>
+        /// <typeparam name="T">Type to proxy</typeparam>
+        /// <param name="IncludeProperty">Properties that will be explicitly copied to the memento at the moment of its creation</param>
+        /// ExcludedProperties takes precedence over IncludeProperty</param>
         /// <param name="Instance">Instance to copy</param>
         /// <returns></returns>
         public static Memento<T> Create<T>(T Instance, Func<PropertyInfo, bool> IncludeProperty)
             where T : class
         {
-            HashSet<string> copy;
-            T result = Create(Instance, out copy, IncludeProperty);
-            return new Memento<T> { Instance = result, ModifiedProperties = copy };
+            return Create(Instance, IncludeProperty, P => false);
         }
     }
 }

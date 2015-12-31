@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kea.Memento", "Kea.Memento\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Kea.Memento.Test", "Kea.Memento.Test\Kea.Memento.Test.csproj", "{FDA44E63-11BB-48EE-945E-1CF4F50F1944}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GitBackup", "GitBackup\GitBackup.csproj", "{2BB3F757-DCBC-4736-81BF-6C5FC7F75A09}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -61,6 +63,10 @@ Global
 		{FDA44E63-11BB-48EE-945E-1CF4F50F1944}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FDA44E63-11BB-48EE-945E-1CF4F50F1944}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FDA44E63-11BB-48EE-945E-1CF4F50F1944}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BB3F757-DCBC-4736-81BF-6C5FC7F75A09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BB3F757-DCBC-4736-81BF-6C5FC7F75A09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BB3F757-DCBC-4736-81BF-6C5FC7F75A09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BB3F757-DCBC-4736-81BF-6C5FC7F75A09}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -72,5 +78,6 @@ Global
 		{961A648E-570D-4AF3-AF6C-12684839EFD5} = {440BF8A7-FC1A-4ED1-98C3-125BF904CC53}
 		{E3F25B69-CC65-429F-BA3B-A834933C9C69} = {440BF8A7-FC1A-4ED1-98C3-125BF904CC53}
 		{FDA44E63-11BB-48EE-945E-1CF4F50F1944} = {440BF8A7-FC1A-4ED1-98C3-125BF904CC53}
+		{2BB3F757-DCBC-4736-81BF-6C5FC7F75A09} = {440BF8A7-FC1A-4ED1-98C3-125BF904CC53}
 	EndGlobalSection
 EndGlobal

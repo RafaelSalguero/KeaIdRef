@@ -12,6 +12,7 @@ namespace Kea.Extensions.Test
         [TestMethod]
         public void SelectPos()
         {
+            Assert.AreEqual(0, new int[0].SelectLookahead(Tuple.Create).Count());
 
             Assert.IsTrue(new[] { 1, 2, 3, 4, 5 }.SelectLookahead(Tuple.Create).SequenceEqual(
                new[]

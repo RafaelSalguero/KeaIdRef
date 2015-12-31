@@ -68,7 +68,7 @@ namespace Kea.Extensions
             }
             if (index == 1)
                 yield return Selector(default(T), Current, default(T), 0, SequencePosition.Single);
-            else
+            else if (index > 1)
                 yield return Selector(Last, Current, default(T), index - 1, SequencePosition.Last);
 
         }
