@@ -3,12 +3,20 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 using static Kea.Extensions.LinqExtensions;
-
 namespace Kea.Extensions.Test
 {
     [TestClass]
     public class UnitTest1
     {
+        [TestMethod]
+        public void SegmentTest()
+        {
+            var items = new[] { 0, 1, 2, 3, 4 };
+            Assert.IsTrue(items.Segment(1, 1).SequenceEqual(new[] { 1 }));
+            Assert.IsTrue(items.Segment(2, 2).SequenceEqual(new[] { 2, 3 }));
+            Assert.IsTrue(items.Segment(2, 3).SequenceEqual(new[] { 2, 3, 4 }));
+        }
+
         [TestMethod]
         public void SelectPos()
         {

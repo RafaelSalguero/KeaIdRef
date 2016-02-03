@@ -125,7 +125,7 @@ namespace Kea
 
         private static Func<PropertyInfo, bool> serializationInclude = x =>
          (x.CanRead && x.CanWrite && !x.GetGetMethod().IsVirtual) ||
-         (x.CanRead && x.GetGetMethod().IsVirtual);
+         (x.CanRead && !x.CanWrite && x.GetGetMethod().IsVirtual);
 
         /// <summary>
         /// Return a predicate that passes all

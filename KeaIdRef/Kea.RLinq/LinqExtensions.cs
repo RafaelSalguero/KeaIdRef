@@ -38,6 +38,19 @@ namespace Kea.Extensions
         }
 
         /// <summary>
+        /// Create a segment of a list without copying each element of the list or creating a new instance of a list or an array
+        /// </summary>
+        /// <typeparam name="T">Element type</typeparam>
+        /// <param name="items">Original items</param>
+        /// <param name="offset">Segment offset</param>
+        /// <param name="count">Segment size</param>
+        /// <returns>An implementation of the IReadOnlyList interface that mantains a reference to the original list</returns>
+        public static IReadOnlyList<T> Segment<T>(this IReadOnlyList<T> items, int offset, int count)
+        {
+            return new SequenceSegment<T>(items, offset, count);
+        }
+
+        /// <summary>
         /// Apply a selector to a function that have access to the previews, current, and next item
         /// </summary>
         /// <typeparam name="T"></typeparam>
